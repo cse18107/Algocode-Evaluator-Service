@@ -6,6 +6,7 @@ module.exports = {
     ecmaVersion: 2022,
     sourceType: "module",
     project: "tsconfig.json",
+    tsconfigRootDir: __dirname,
   },
   env: {
     es6: true,
@@ -20,6 +21,6 @@ module.exports = {
     "no-multiple-empty-lines": "error",
     "prefer-const": "error",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
+    "simple-import-sort/exports": "error",
   },
 };
