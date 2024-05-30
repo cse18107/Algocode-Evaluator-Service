@@ -19,3 +19,4 @@
    ```
 8. npm i concurrently
 9. to setup eslint refer [eslint](https://blog.tericcabrel.com/set-up-a-nodejs-project-with-typescript-eslint-and-prettier/ "https://blog.tericcabrel.com/set-up-a-nodejs-project-with-typescript-eslint-and-prettier/")
+10. wsl --distribution `<Distribution Name>` --user `<User Name>`
