@@ -45,6 +45,8 @@ print("value of x is", x);
 for i in range(int(x)): 
   print("2 X",i ," = ", 2*i )
   `;
-  // const code = "print(input())";
-  runPython(code, "100");
+
+  const inputTestCase = `100
+  200`;
+  runPython(code, inputTestCase);
 });
