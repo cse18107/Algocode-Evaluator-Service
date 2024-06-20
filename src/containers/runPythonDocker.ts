@@ -33,7 +33,7 @@ async function runPython(code: string, inputTestCase: string) {
     rawLogBuffer.push(chunk);
   });
 
-  await new Promise((res, _) => {
+  await new Promise((res) => {
     // eslint-disable-next-line no-unused-vars
     loggerStream.on("end", (_chunk) => {
       console.log(rawLogBuffer);
