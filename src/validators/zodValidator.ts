@@ -1,7 +1,6 @@
+/* eslint-disable indent */
 import { NextFunction, Request, Response } from "express";
 import { ZodSchema } from "zod";
-
-import { CreateSubmissionDto } from "../dtos/CreateSubmissionDto";
 
 export const validate =
   (schema: ZodSchema<any>) =>

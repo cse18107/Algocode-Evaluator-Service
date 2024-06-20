@@ -2,6 +2,7 @@ import bodyParser from "body-parser";
 import express, { Express } from "express";
 
 import serverConfig from "./config/serverConfig";
+import runPython from "./containers/runPythonDocker";
 // import sampleQueueProducer from "./producers/sampleQueueProducer";
 import apiRouter from "./routes";
 import SampleWorker from "./workers/SampleWorker";
@@ -39,4 +40,11 @@ app.listen(serverConfig.PORT, () => {
   //   },
   //   1,
   // );
+  const code = `x=input();
+print("value of x is", x);
+for i in range(int(x)): 
+  print("2 X",i ," = ", 2*i )
+  `;
+  // const code = "print(input())";
+  runPython(code, "100");
 });
