@@ -1,29 +1,29 @@
 // import Docker from 'dockerode';
 
 // import { TestCases } from '../types/testCases';
-import { PYTHON_IMAGE } from "../utils/constants";
+import { CPP_IMAGE } from "../utils/constants";
 import createContainer from "./containerFactory";
 import decodeDockerStream from "./dockerHelper";
 import pullImage from "./pullImage";
 
-async function runPython(code: string, inputTestCase: string) {
+async function runCpp(code: string, inputTestCase: string) {
   const rawLogBuffer: Buffer[] = [];
 
-  console.log("Initialising a new python docker container");
-  await pullImage(PYTHON_IMAGE);
-  const runCommand = `echo '${code.replace(/'/g, `'\\"`)}' > test.py && echo '${inputTestCase.replace(/'/g, `'\\"`)}}' | python3 test.py`;
-  const pythonDockerContainer = await createContainer(PYTHON_IMAGE, [
+  console.log("Initialising a new cpp docker container");
+  await pullImage(CPP_IMAGE);
+  const runCommand = `echo '${code.replace(/'/g, `'\\"`)}' > main.cpp &&  g++ main.cpp -o main && echo '${inputTestCase.replace(/'/g, `'\\"`)}}' | stdbuf -oL -eL ./main`;
+  const cppDockerContainer = await createContainer(CPP_IMAGE, [
     "/bin/sh",
     "-c",
     runCommand,
   ]);
 
   // starting / booting the corresponding docker container
-  await pythonDockerContainer.start();
+  await cppDockerContainer.start();
 
   console.log("Started the docker container");
 
-  const loggerStream = await pythonDockerContainer.logs({
+  const loggerStream = await cppDockerContainer.logs({
     stdout: true,
     stderr: true,
     timestamps: false,
@@ -35,7 +35,7 @@ async function runPython(code: string, inputTestCase: string) {
     rawLogBuffer.push(chunk);
   });
 
-  await new Promise((res) => {
+  const response = await new Promise((res) => {
     // eslint-disable-next-line no-unused-vars
     loggerStream.on("end", (_chunk) => {
       console.log(rawLogBuffer);
@@ -48,9 +48,9 @@ async function runPython(code: string, inputTestCase: string) {
   });
 
   //remove the container
-  await pythonDockerContainer.remove();
+  await cppDockerContainer.remove();
 
-  return pythonDockerContainer;
+  return response;
 }
 
-export default runPython;
+export default runCpp;

@@ -31,6 +31,10 @@ docker pull python
 
 wsl --distribution Ubuntu --user `soumodeep`
 
+redis-server
+
 npm run dev
 
 ---
+
+67 -> 01:01:16
