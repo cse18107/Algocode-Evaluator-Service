@@ -4,7 +4,6 @@ import express, { Express } from "express";
 // import runCpp from "./containers/runCpp";
 import bullBoardAdapter from "./config/bullBoardConfig";
 import serverConfig from "./config/serverConfig";
-import submissionQueueProducer from "./producers/submissionQueueProducer";
 // import runJava from "./containers/runJavaDocker";
 // import runPython from "./containers/runPythonDocker";
 // import sampleQueueProducer from "./producers/sampleQueueProducer";
@@ -69,32 +68,32 @@ app.listen(serverConfig.PORT, () => {
   // }
   // `;
 
-  const code = `
-  #include<iostream>
-  #include<stdio.h>
-  using namespace std;
+  // const code = `
+  // #include<iostream>
+  // #include<stdio.h>
+  // using namespace std;
 
-  int main() {
-    int x;
-    cin>>x;
-    cout<<"Value of x is "<<x<<endl;
-    for(int i=0;i<x;i++){
-      cout<<i << " ";
-    }
-      cout<<endl;
-      return 0;
-  }
-  `;
+  // int main() {
+  //   int x;
+  //   cin>>x;
+  //   cout<<"Value of x is "<<x<<endl;
+  //   for(int i=0;i<x;i++){
+  //     cout<<i << " ";
+  //   }
+  //     cout<<endl;
+  //     return 0;
+  // }
+  // `;
 
-  const inputTestCase = `10`;
+  // const inputTestCase = `10`;
 
-  submissionQueueProducer({
-    "123": {
-      language: "CPP",
-      inputCase: inputTestCase,
-      code,
-    },
-  });
+  // submissionQueueProducer({
+  //   "123": {
+  //     language: "CPP",
+  //     inputCase: inputTestCase,
+  //     code,
+  //   },
+  // });
   // runPython(code, inputTestCase);
   // runJava(code, inputTestCase);
   // runCpp(code, inputTestCase);

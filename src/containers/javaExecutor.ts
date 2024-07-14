@@ -13,7 +13,9 @@ class JavaExecutor implements CodeExecutorStrategy {
   async execute(
     code: string,
     inputTestCase: string,
+    outputTestCase: string,
   ): Promise<ExecutionResponse> {
+    console.log(code, inputTestCase, outputTestCase);
     const rawLogBuffer: Buffer[] = [];
 
     console.log("Initialising a new java docker container");
