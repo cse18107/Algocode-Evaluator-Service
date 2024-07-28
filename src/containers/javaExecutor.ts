@@ -1,6 +1,7 @@
 // import Docker from 'dockerode';
 
 // import { TestCases } from '../types/testCases';
+
 import CodeExecutorStrategy, {
   ExecutionResponse,
 } from "../types/CodeExecutorStrategy";
@@ -13,9 +14,9 @@ class JavaExecutor implements CodeExecutorStrategy {
   async execute(
     code: string,
     inputTestCase: string,
-    outputTestCase: string,
+    outputCase: string,
   ): Promise<ExecutionResponse> {
-    console.log(code, inputTestCase, outputTestCase);
+    console.log(code, inputTestCase, outputCase);
     const rawLogBuffer: Buffer[] = [];
 
     console.log("Initialising a new java docker container");
@@ -49,8 +50,16 @@ class JavaExecutor implements CodeExecutorStrategy {
         loggerStream,
         rawLogBuffer,
       );
-      return { output: codeResponse, status: "COMPLETED" };
+
+      if (codeResponse.trim() === outputCase.trim()) {
+        return { output: codeResponse, status: "SUCCESS" };
+      } else {
+        return { output: codeResponse, status: "WA" };
+      }
     } catch (error) {
+      if (error === "TLE") {
+        await javaDockerContainer.kill();
+      }
       return { output: error as string, status: "ERROR" };
     } finally {
       await javaDockerContainer.remove();
@@ -62,9 +71,15 @@ class JavaExecutor implements CodeExecutorStrategy {
     rawLogBuffer: Buffer[],
   ): Promise<string> {
     return new Promise((res, rej) => {
+      const timeout = setTimeout(() => {
+        console.log("Timeout called");
+        rej("TLE");
+      }, 2000);
       // eslint-disable-next-line no-unused-vars
       loggerStream.on("end", () => {
         console.log(rawLogBuffer);
+        // This callback executes when the stream ends
+        clearTimeout(timeout);
         const completeBuffer = Buffer.concat(rawLogBuffer);
         const decodedStream = decodeDockerStream(completeBuffer);
         console.log(decodedStream);

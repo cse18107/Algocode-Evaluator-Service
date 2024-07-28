@@ -62,9 +62,15 @@ class PythonExecutor implements CodeExecutorStrategy {
     rawLogBuffer: Buffer[],
   ): Promise<string> {
     return new Promise((res, rej) => {
+      const timeout = setTimeout(() => {
+        console.log("Timeout called");
+        rej("TLE");
+      }, 2000);
       // eslint-disable-next-line no-unused-vars
       loggerStream.on("end", () => {
         console.log(rawLogBuffer);
+        // This callback executes when the stream ends
+        clearTimeout(timeout);
         const completeBuffer = Buffer.concat(rawLogBuffer);
         const decodedStream = decodeDockerStream(completeBuffer);
         console.log(decodedStream);
