@@ -29,7 +29,9 @@ before start
 
 docker pull python
 
+```
 wsl --distribution Ubuntu --user `soumodeep`
+```
 
 redis-server
 
